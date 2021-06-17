@@ -1,0 +1,9 @@
+p, h1, h2, h3, h4, h5, h6, div, span, mat-card-title{
+    font-family: 'Poppins', sans-serif;
+}
+
+table{
+    width: 100%;
+    box-shadow: none;
+    font-size: 20px !important;
+}
