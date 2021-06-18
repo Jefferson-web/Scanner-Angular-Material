@@ -6,6 +6,12 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { MaterialModule } from '../material.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
+import { HttpClientModule } from '@angular/common/http';
+import { IConfig, NgxMaskModule } from 'ngx-mask';
+
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 
 @NgModule({
   declarations: [
@@ -17,7 +23,9 @@ import { PagesComponent } from './pages.component';
   imports: [
     CommonModule,
     MaterialModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    HttpClientModule,
+    NgxMaskModule.forRoot(maskConfig)
   ],
   exports: [
     PagesComponent,

@@ -10,36 +10,38 @@
                     <div>
                         <mat-form-field appearance="outline" style="font-size: 20px; width: 100%;">
                             <mat-label>N° de Guía</mat-label>
-                            <input matInput placeholder="Ej. 011-1234567" #input="matInput" name="input" id="txtInput">
+                            <input matInput placeholder="Ej. 011-1234567" #input="matInput" name="input" id="txtInput"
+                                (change)="onInputChange();" mask="000-0000000">
                             <mat-icon matSuffix style="font-size: 2rem; margin-right: 20px">qr_code</mat-icon>
                             <!-- <mat-hint>Hint</mat-hint> -->
                         </mat-form-field>
                     </div>
+                </div>
+                <div class="col-8">
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="index">
-                            <th mat-header-cell *matHeaderCellDef> # </th>
-                            <td mat-cell *matCellDef="let element"> </td>
+                        <!-- id Column -->
+                        <ng-container matColumnDef="id">
+                          <th mat-header-cell *matHeaderCellDef> Id. </th>
+                          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                         </ng-container>
-
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="nroguia">
-                            <th mat-header-cell *matHeaderCellDef> Nro. de Guía </th>
-                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                      
+                        <!-- nombre Column -->
+                        <ng-container matColumnDef="nombre">
+                          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
                         </ng-container>
-
-                        <!-- Weight Column -->
-                        <ng-container matColumnDef="fecha">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                      
+                        <!-- apellido Column -->
+                        <ng-container matColumnDef="apellido">
+                          <th mat-header-cell *matHeaderCellDef> Apellido </th>
+                          <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
                         </ng-container>
-
+                      
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
+                      </table>
                 </div>
-
             </div>
         </mat-card-content>
     </mat-card>
