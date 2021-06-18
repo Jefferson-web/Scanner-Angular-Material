@@ -1,4 +1,5 @@
 export interface Guia {
+    position?: number;
     IdProceso?: number;
     NroGuia?: string;
     EstadoProceso?: boolean;

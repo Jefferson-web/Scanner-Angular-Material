@@ -15,18 +15,13 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   @ViewChild('input') input: MatInput;
   guias: Guia[] = [];
   value: string = "";
-  dataSource = [
-    { id: '1', nombre: 'jefferson', apellido: 'Ledesma' },
-    { id: '2', nombre: 'nataly', apellido: 'Ledesma' },
-    { id: '3', nombre: 'brayan', apellido: 'Ledesma' }
-  ]
-  displayedColumns: string[] = ['id', 'nombre', 'apellido'];
+  displayedColumns: string[] = ['position', 'nroGuia', 'fechaInicio'];
 
   constructor(private _guiaService: GuiaService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.getGuias();
+    this.getData();
   }
 
   ngAfterViewInit(): void {
@@ -40,7 +35,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     });
   }
 
-  getGuias() {
+  getData() {
     this._guiaService.findAll().subscribe(guias => {
       this.guias = guias;
     });
@@ -49,10 +44,11 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   onInputChange() {
     const value = this.input.value;
     if (this.isValid(value)) {
-      const guia: Guia = { NroGuia: value };
+      const guia: Guia = {NroGuia: value, FechaInicio: new Date() };
       this._guiaService.save(guia).subscribe(response => {
-        this.guias.push(response);
-        this.clearInput();
+        response.position = this.nextIndex();
+        this.guias = this.guias.concat(response);
+        this.clear();
         this.toastr.success(`Guía ${guia.NroGuia} registrada.`, 'Tecnimotors');
       }, error => {
         alert('Ocuerrio un error en el servidor.');
@@ -60,6 +56,10 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     } else {
       this.toastr.error(`N° de Guía inválida.`, 'Tecnimotors');
     }
+  }
+
+  nextIndex(){
+    return this.guias.length + 1;
   }
 
   delete(guia: Guia) {
@@ -74,7 +74,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     return /^([0-9]{3}-[0-9]{7})*$/.test(val) && val.length !== 0;
   }
 
-  clearInput() {
+  clear() {
     this.input.value = "";
   }
 
