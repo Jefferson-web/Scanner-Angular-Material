@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { Guia } from '../Interfaces/Guia';
 
 @Injectable({
@@ -18,14 +17,7 @@ export class GuiaService {
   }
 
   findAll(): Observable<Guia[]> {
-    return this.http.get(this.url).pipe(
-      map((guias: any) => {
-        for (let [index, guia] of guias.entries()) {
-          guia.position = index + 1;
-        }
-        return guias as Guia[];
-      })
-    );
+    return this.http.get<Guia[]>(this.url);
   }
 
   save(guia: Guia): Observable<any> {

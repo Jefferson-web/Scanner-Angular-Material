@@ -7,10 +7,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatTableModule} from '@angular/material/table';
-import {A11yModule} from '@angular/cdk/a11y';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatStepperModule } from '@angular/material/stepper';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   imports: [
@@ -25,7 +28,9 @@ import {A11yModule} from '@angular/cdk/a11y';
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    A11yModule
+    MatPaginatorModule,
+    MatStepperModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatSidenavModule,
@@ -38,7 +43,9 @@ import {A11yModule} from '@angular/cdk/a11y';
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    A11yModule
+    MatPaginatorModule,
+    MatStepperModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule { }

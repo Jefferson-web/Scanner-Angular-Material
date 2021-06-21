@@ -1,6 +1,8 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Guia } from 'src/app/Interfaces/Guia';
 import { GuiaService } from 'src/app/services/guia.service';
@@ -13,9 +15,12 @@ import { GuiaService } from 'src/app/services/guia.service';
 export class FacturacionComponent implements AfterViewInit, OnInit {
 
   @ViewChild('input') input: MatInput;
-  guias: Guia[] = [];
   value: string = "";
-  displayedColumns: string[] = ['position', 'nroGuia', 'fechaInicio'];
+
+  // DataTables Variables
+  displayedColumns: string[] = ['position', 'nroGuia', 'fechaInicio', 'acciones'];
+  dataSource: MatTableDataSource<Guia>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private _guiaService: GuiaService,
     private toastr: ToastrService) { }
@@ -28,6 +33,14 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     this.setFocus();
   }
 
+  getData() {
+    this._guiaService.findAll().subscribe(response => {
+      this.dataSource = new MatTableDataSource<Guia>(response);
+      this.dataSource.paginator = this.paginator;
+      this.paginator._intl.itemsPerPageLabel = "Guías por página"
+    });
+  }
+
   setFocus() {
     setTimeout(() => {
       this.input.focused = true;
@@ -35,19 +48,12 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     });
   }
 
-  getData() {
-    this._guiaService.findAll().subscribe(guias => {
-      this.guias = guias;
-    });
-  }
-
   onInputChange() {
     const value = this.input.value;
     if (this.isValid(value)) {
-      const guia: Guia = {NroGuia: value, FechaInicio: new Date() };
+      const guia: Guia = { NroGuia: value, FechaInicio: new Date() };
       this._guiaService.save(guia).subscribe(response => {
-        response.position = this.nextIndex();
-        this.guias = this.guias.concat(response);
+        this.dataSource.data = [...this.dataSource.data, response];
         this.clear();
         this.toastr.success(`Guía ${guia.NroGuia} registrada.`, 'Tecnimotors');
       }, error => {
@@ -58,16 +64,16 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     }
   }
 
-  nextIndex(){
-    return this.guias.length + 1;
-  }
-
-  delete(guia: Guia) {
+  delete(guia: any) {
     if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.NroGuia}?`)) {
-      this._guiaService.delete(guia.IdProceso).subscribe(response => {
-        this.guias = this.guias.filter(objGuia => objGuia.IdProceso != guia.IdProceso);
+      this._guiaService.delete(guia.id).subscribe(response => {
+        this.dataSource.data = this.dataSource.data.filter((objGuia: any) => objGuia.id != guia.id);
       });
     }
+  }
+
+  nextIndex() {
+    return this.dataSource.data.length + 1;
   }
 
   isValid(val: string) {

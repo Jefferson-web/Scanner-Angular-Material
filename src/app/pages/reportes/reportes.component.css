@@ -1,0 +1,14 @@
+mat-card-title{
+    font-weight: 400;
+}
+
+table{
+    width: 100%;
+    box-shadow: none;
+    font-size: 20px !important;
+}
+
+table tr:hover {
+    background-color: #f3f3f3;
+    cursor: pointer;
+}

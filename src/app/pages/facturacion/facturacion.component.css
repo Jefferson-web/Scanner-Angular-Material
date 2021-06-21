@@ -7,3 +7,11 @@ table{
     box-shadow: none;
     font-size: 20px !important;
 }
+
+td{
+    font-size: 1.1rem;
+}
+
+th, mat-paginator{
+    font-size: .9rem;
+}
