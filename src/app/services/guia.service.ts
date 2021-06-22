@@ -8,24 +8,21 @@ import { Guia } from '../Interfaces/Guia';
 })
 export class GuiaService {
 
-  private baseURL: string = 'http://localhost:5000';
+  private baseURL: string = 'https://localhost:44343/api/Guia';
 
   constructor(private http: HttpClient) { }
 
-  private get url() {
-    return this.baseURL + '/guias';
-  }
-
   findAll(): Observable<Guia[]> {
-    return this.http.get<Guia[]>(this.url);
+    return this.http.get<Guia[]>(this.baseURL);
   }
 
   save(guia: Guia): Observable<any> {
-    return this.http.post(this.url, guia);
+    console.log(guia);
+    return this.http.post(this.baseURL, guia);
   }
 
   delete(Id: any): Observable<any> {
-    return this.http.delete(this.url + '/' + Id);
+    return this.http.delete(this.baseURL + '/' + Id);
   }
 
 }

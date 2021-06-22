@@ -1,10 +1,9 @@
 export interface Guia {
-    position?: number;
-    IdProceso?: number;
-    NroGuia?: string;
-    EstadoProceso?: boolean;
-    Accion?: boolean;
-    Observacion?: string;
-    FechaInicio?: Date;
-    FechaFin?: Date;
+    idProceso?: number;
+    nroGuia?: string;
+    estadoProceso?: boolean;
+    accion?: boolean;
+    observacion?: string;
+    fechaInicio?: Date;
+    fechaFin?: Date;
 }

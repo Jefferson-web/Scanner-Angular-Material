@@ -1,8 +1,8 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Guia } from 'src/app/Interfaces/Guia';
 import { GuiaService } from 'src/app/services/guia.service';
@@ -23,7 +23,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private _guiaService: GuiaService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getData();
@@ -37,7 +38,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     this._guiaService.findAll().subscribe(response => {
       this.dataSource = new MatTableDataSource<Guia>(response);
       this.dataSource.paginator = this.paginator;
-      this.paginator._intl.itemsPerPageLabel = "Guías por página"
+      this.paginator._intl.itemsPerPageLabel = "Guías por página";
     });
   }
 
@@ -51,31 +52,29 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   onInputChange() {
     const value = this.input.value;
     if (this.isValid(value)) {
-      const guia: Guia = { NroGuia: value, FechaInicio: new Date() };
+      const guia: Guia = { nroGuia: value, fechaInicio: new Date() };
       this._guiaService.save(guia).subscribe(response => {
         this.dataSource.data = [...this.dataSource.data, response];
         this.clear();
-        this.toastr.success(`Guía ${guia.NroGuia} registrada.`, 'Tecnimotors');
-      }, error => {
-        alert('Ocuerrio un error en el servidor.');
+        this.toastr.success(`Guía ${guia.nroGuia} registrada.`, 'Tecnimotors');
+      }, err => {
+        this.toastr.error(err.error, 'Cuidado!!!');
+        this.clear();
       });
     } else {
-      this.toastr.error(`N° de Guía inválida.`, 'Tecnimotors');
+      this.toastr.info(`N° de Guía inválida.`, 'Tecnimotors');
     }
   }
 
-  delete(guia: any) {
-    if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.NroGuia}?`)) {
-      this._guiaService.delete(guia.id).subscribe(response => {
-        this.dataSource.data = this.dataSource.data.filter((objGuia: any) => objGuia.id != guia.id);
+  delete(guia: Guia) {
+    if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroGuia}?`)) {
+      this._guiaService.delete(guia.idProceso).subscribe(response => {
+        this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idProceso != guia.idProceso);
+        this._snackBar.open(`Guía N° ${guia.nroGuia} eliminada.`, "Ok", { duration: 2000 })
       });
     }
   }
-
-  nextIndex() {
-    return this.dataSource.data.length + 1;
-  }
-
+  
   isValid(val: string) {
     return /^([0-9]{3}-[0-9]{7})*$/.test(val) && val.length !== 0;
   }
