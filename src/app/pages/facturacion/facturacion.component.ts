@@ -39,6 +39,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
       this.dataSource = new MatTableDataSource<Guia>(response);
       this.dataSource.paginator = this.paginator;
       this.paginator._intl.itemsPerPageLabel = "Guías por página";
+    }, err => {
+      alert('Ocurrio un error en la obtención de los datos.');
     });
   }
 
@@ -52,11 +54,11 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   onInputChange() {
     const value = this.input.value;
     if (this.isValid(value)) {
-      const guia: Guia = { nroGuia: value, fechaInicio: new Date() };
+      const guia: Guia = { nroguia: value, fechainicio: new Date() };
       this._guiaService.save(guia).subscribe(response => {
         this.dataSource.data = [...this.dataSource.data, response];
         this.clear();
-        this.toastr.success(`Guía ${guia.nroGuia} registrada.`, 'Tecnimotors');
+        this.toastr.success(`Guía ${guia.nroguia} registrada.`, 'Tecnimotors');
       }, err => {
         this.toastr.error(err.error, 'Cuidado!!!');
         this.clear();
@@ -67,10 +69,12 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   }
 
   delete(guia: Guia) {
-    if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroGuia}?`)) {
-      this._guiaService.delete(guia.idProceso).subscribe(response => {
-        this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idProceso != guia.idProceso);
-        this._snackBar.open(`Guía N° ${guia.nroGuia} eliminada.`, "Ok", { duration: 2000 })
+    if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroguia}?`)) {
+      this._guiaService.delete(guia.idproceso).subscribe(response => {
+        this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idproceso != guia.idproceso);
+        this._snackBar.open(`Guía N° ${guia.nroguia} eliminada.`, "Ok", { duration: 2000 })
+      }, err => {
+        this.toastr.error('Ocurrió un error en la eliminación.');
       });
     }
   }

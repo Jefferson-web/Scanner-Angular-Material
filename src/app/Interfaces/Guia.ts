@@ -1,9 +1,9 @@
 export interface Guia {
-    idProceso?: number;
-    nroGuia?: string;
-    estadoProceso?: boolean;
+    idproceso?: number;
+    nroguia?: string;
+    estadoproceso?: boolean;
     accion?: boolean;
     observacion?: string;
-    fechaInicio?: Date;
-    fechaFin?: Date;
+    fechainicio?: Date;
+    fechafin?: Date;
 }

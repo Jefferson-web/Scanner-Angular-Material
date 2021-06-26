@@ -8,7 +8,7 @@ import { Guia } from '../Interfaces/Guia';
 })
 export class GuiaService {
 
-  private baseURL: string = 'https://localhost:44343/api/Guia';
+  private baseURL: string = 'https://localhost:44357/api/Guia';
 
   constructor(private http: HttpClient) { }
 

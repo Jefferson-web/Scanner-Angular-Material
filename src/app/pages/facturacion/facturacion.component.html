@@ -29,13 +29,13 @@
                         <!-- nombre Column -->
                         <ng-container matColumnDef="nroGuia">
                             <th mat-header-cell *matHeaderCellDef> Guía de Remisión </th>
-                            <td mat-cell *matCellDef="let element"> {{element.nroGuia}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.nroguia}} </td>
                         </ng-container>
 
                         <!-- apellido Column -->
                         <ng-container matColumnDef="fechaInicio">
                             <th mat-header-cell *matHeaderCellDef> Fecha de Registro </th>
-                            <td mat-cell *matCellDef="let element"> {{element.fechaInicio | date: 'M/d/yy, h:mm a'}}
+                            <td mat-cell *matCellDef="let element"> {{element.fechainicio | date: 'M/d/yy, h:mm a'}}
                             </td>
                         </ng-container>
 
