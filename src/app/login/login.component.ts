@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  selectedValue: number = -1;
+
+  constructor(private _router: Router,
+              private _loginService: LoginService) { }
 
   ngOnInit(): void {
+  }
+
+  ingresar(){
+    this._loginService.login(this.selectedValue);
+    this._router.navigate(['/inicio']);
   }
 
 }

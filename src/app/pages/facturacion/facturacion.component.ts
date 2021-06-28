@@ -74,6 +74,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
         this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idproceso != guia.idproceso);
         this._snackBar.open(`Guía N° ${guia.nroguia} eliminada.`, "Ok", { duration: 2000 })
       }, err => {
+        console.log(err);
         this.toastr.error('Ocurrió un error en la eliminación.');
       });
     }
