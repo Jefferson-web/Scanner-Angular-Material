@@ -5,7 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Guia } from 'src/app/Interfaces/Guia';
+import { CheckInternetService } from 'src/app/services/check-internet.service';
 import { GuiaService } from 'src/app/services/guia.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -17,7 +19,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
 
   @ViewChild('input') input: MatInput;
   value: string = "";
-
+  isOnline: boolean = true;
   // DataTables Variables
   displayedColumns: string[] = ['position', 'nroGuia', 'fechaInicio', 'acciones'];
   dataSource: MatTableDataSource<Guia>;
@@ -26,25 +28,45 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   constructor(private _guiaService: GuiaService,
     private toastr: ToastrService,
     private _snackBar: MatSnackBar,
-    private _loginService: LoginService) { }
+    private _loginService: LoginService,
+    private _internet: CheckInternetService,
+    private _localStorage: LocalStorageService) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.checkStatus();
+    if(this.isOnline){
+      this.getData();
+    } else {
+      this.loadDatasource(this._localStorage.guias);
+    }
   }
 
   ngAfterViewInit(): void {
     this.setFocus();
   }
 
+  checkStatus(){
+    this._internet.createOnline$().subscribe(status => {
+      this.isOnline = status;
+      if(this.isOnline){
+        this.getData();
+      }
+    });
+  }
+
   getData() {
     let idlocalidad = this._loginService.localidad;
     this._guiaService.findAll(idlocalidad).subscribe(response => {
-      this.dataSource = new MatTableDataSource<Guia>(response);
-      this.dataSource.paginator = this.paginator;
-      this.paginator._intl.itemsPerPageLabel = "Guías por página";
+      this.loadDatasource([...response, ...this._localStorage.guias]);
     }, err => {
       alert('Ocurrio un error en la obtención de los datos.');
     });
+  }
+
+  loadDatasource(data: any){
+    this.dataSource = new MatTableDataSource<Guia>(data);
+      this.dataSource.paginator = this.paginator;
+      this.paginator._intl.itemsPerPageLabel = "Guías por página";
   }
 
   setFocus() {
@@ -59,14 +81,21 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     if (this.isValid(value)) {
       let idlocalidad = this._loginService.localidad;
       const guia: Guia = { nroguia: value, fechainicio: new Date(), idlocalidad};
-      this._guiaService.save(guia).subscribe(response => {
-        this.dataSource.data = [...this.dataSource.data, response];
+      if(!this.isOnline){
+        this._localStorage.add(guia);
+        this.toastr.success(`Guía ${guia.nroguia} registrada.`);
+        this.dataSource.data = [...this.dataSource.data, guia];
         this.clear();
-        this.toastr.success(`Guía ${guia.nroguia} registrada.`, 'Tecnimotors');
-      }, err => {
-        this.toastr.error(err.error, 'Cuidado!!!');
-        this.clear();
-      });
+      } else {
+        this._guiaService.save(guia).subscribe(response => {
+          this.dataSource.data = [...this.dataSource.data, response];
+          this.clear();
+          this.toastr.success(`Guía ${guia.nroguia} registrada.`, 'Tecnimotors');
+        }, err => {
+          this.toastr.error(err.error, 'Cuidado!!!');
+          this.clear();
+        });
+      }
     } else {
       this.toastr.info(`N° de Guía inválida.`, 'Tecnimotors');
     }
@@ -86,8 +115,6 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   isValid(val: string) {
     return  val.length !== 0;
   }
-
-  /* /^([0-9]{3}-[0-9]{7})*$/.test(val) && */
 
   clear() {
     this.input.value = "";
