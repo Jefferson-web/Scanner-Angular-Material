@@ -6,4 +6,5 @@ export interface Guia {
     observacion?: string;
     fechainicio?: Date;
     fechafin?: Date;
+    idlocalidad?:number;
 }

@@ -1,18 +1,23 @@
-<mat-form-field appearance="outline">
-    <mat-label>Escoge una localidad</mat-label>
-    <mat-select [(ngModel)]="selectedValue">
-        <mat-option value="1">Localidad 1</mat-option>
-        <mat-option value="2">Localidad 2</mat-option>
-        <mat-option value="3">Localidad 3</mat-option>
-        <mat-option value="4">Localidad 4</mat-option>
-        <mat-option value="5">Localidad 5</mat-option>
-        <mat-option value="6">Localidad 6</mat-option>
-        <mat-option value="7">Localidad 7</mat-option>
-        <mat-option value="8">Localidad 8</mat-option>
-        <mat-option value="9">Localidad 9</mat-option>
-        <mat-option value="10">Localidad 10</mat-option>
-    </mat-select>
-</mat-form-field>
-<button mat-raised-button class="btn-ingresar" [disabled]="selectedValue==-1" (click)="ingresar();">
-    <span>Ingresar</span>
-</button>
+<div class="container">
+    <div class="form-container">
+        <mat-card class="form-card">
+            <mat-card-header>
+                <mat-card-title>LOGIN</mat-card-title>
+                <mat-card-subtitle>Seleccione la localidad</mat-card-subtitle>
+              </mat-card-header>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Escoge una localidad</mat-label>
+                    <mat-select [(ngModel)]="selectedValue">
+                        <mat-option [value]="localidad.idlocalidad" *ngFor="let localidad of localidades">{{ localidad.nombre }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div>
+                    <button mat-raised-button class="btn-ingresar" [disabled]="selectedValue==-1" (click)="ingresar();">
+                        <span>Ingresar</span>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

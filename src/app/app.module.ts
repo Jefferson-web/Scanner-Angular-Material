@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { FormsModule } from '@angular/forms';
   exports: [
     
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

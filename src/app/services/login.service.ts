@@ -17,8 +17,8 @@ export class LoginService {
     this._router.navigate(['/login']);
   }
 
-  get localidad(): number | null {
-    return localStorage.getItem('localidad') ? Number(localStorage.getItem('localidad')) : null;
+  get localidad(): number {
+    return localStorage.getItem('localidad') ? Number(localStorage.getItem('localidad')) : -1;
   }
   
   get isLogged(): boolean{

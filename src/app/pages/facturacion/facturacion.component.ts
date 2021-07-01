@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Guia } from 'src/app/Interfaces/Guia';
 import { GuiaService } from 'src/app/services/guia.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-facturacion',
@@ -24,7 +25,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
 
   constructor(private _guiaService: GuiaService,
     private toastr: ToastrService,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private _loginService: LoginService) { }
 
   ngOnInit(): void {
     this.getData();
@@ -35,7 +37,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   }
 
   getData() {
-    this._guiaService.findAll().subscribe(response => {
+    let idlocalidad = this._loginService.localidad;
+    this._guiaService.findAll(idlocalidad).subscribe(response => {
       this.dataSource = new MatTableDataSource<Guia>(response);
       this.dataSource.paginator = this.paginator;
       this.paginator._intl.itemsPerPageLabel = "Guías por página";
@@ -54,7 +57,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   onInputChange() {
     const value = this.input.value;
     if (this.isValid(value)) {
-      const guia: Guia = { nroguia: value, fechainicio: new Date() };
+      let idlocalidad = this._loginService.localidad;
+      const guia: Guia = { nroguia: value, fechainicio: new Date(), idlocalidad};
       this._guiaService.save(guia).subscribe(response => {
         this.dataSource.data = [...this.dataSource.data, response];
         this.clear();
@@ -74,15 +78,16 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
         this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idproceso != guia.idproceso);
         this._snackBar.open(`Guía N° ${guia.nroguia} eliminada.`, "Ok", { duration: 2000 })
       }, err => {
-        console.log(err);
         this.toastr.error('Ocurrió un error en la eliminación.');
       });
     }
   }
   
   isValid(val: string) {
-    return /^([0-9]{3}-[0-9]{7})*$/.test(val) && val.length !== 0;
+    return  val.length !== 0;
   }
+
+  /* /^([0-9]{3}-[0-9]{7})*$/.test(val) && */
 
   clear() {
     this.input.value = "";

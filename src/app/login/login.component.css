@@ -1,3 +1,29 @@
 .btn-ingresar{
     padding: 10px 60px; font-size: 15px; background: #1a73e8; color: white
 }
+
+.form-card mat-form-field{
+    width: 100%;
+}
+
+.form-card .btn-ingresar{
+    width: 100%;
+}
+
+.form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/assets/imagenes/imagen-login.svg');
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: right bottom;
+
+}
+
+
+.form-card{
+    min-width: 350px;
+    transform: translateY(-50%);
+}
