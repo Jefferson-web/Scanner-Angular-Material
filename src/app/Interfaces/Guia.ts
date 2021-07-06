@@ -7,4 +7,5 @@ export interface Guia {
     fechainicio?: Date;
     fechafin?: Date;
     idlocalidad?:number;
+    local?:boolean;
 }

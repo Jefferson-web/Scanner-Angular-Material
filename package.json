@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "db:dev": "json-server --watch db.json --port 5000"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +20,8 @@
     "@angular/platform-browser": "~12.0.3",
     "@angular/platform-browser-dynamic": "~12.0.3",
     "@angular/router": "~12.0.3",
-    "json-server": "^0.16.3",
+    "angular-notifier": "^9.0.1",
     "ngx-mask": "^12.0.0",
-    "ngx-toastr": "^14.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"

@@ -7,9 +7,9 @@ import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from './guards/auth.guard';
+import { NotifierModule } from 'angular-notifier';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,9 @@ import { AuthGuard } from './guards/auth.guard';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    NotifierModule.withConfig({
+      // Custom options in here
+    }),
     PagesModule,
     AppRoutingModule,
     MaterialModule,

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ToastrService } from 'ngx-toastr';
 import { CheckInternetService } from './services/check-internet.service';
 
 @Component({
