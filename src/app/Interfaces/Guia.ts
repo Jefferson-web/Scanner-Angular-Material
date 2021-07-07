@@ -1,6 +1,6 @@
 export interface Guia {
     idproceso?: number;
-    nroguia?: string;
+    nroguia: string;
     estadoproceso?: boolean;
     accion?: boolean;
     observacion?: string;

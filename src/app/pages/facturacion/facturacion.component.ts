@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
@@ -34,11 +35,6 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.checkStatus();
-    if (this.isOnline) {
-      this.getData();
-    } else {
-      this.loadDatasource(this._localStorage.guias);
-    }
   }
 
   ngAfterViewInit(): void {
@@ -50,9 +46,17 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
       this.isOnline = status;
       if (this.isOnline) {
         this._guiaService.cargar()?.subscribe(response => {
+          const cantidad = this._localStorage.guias.length;
+          this.notifier.notify('success', `${cantidad} guías registradas.`);
           this._localStorage.removeAll();
           this.getData();
+          return;
+        }, (err) => {
+          this.notifier.notify('error', err.error);
+          this.getData();
+          this._localStorage.removeAll();
         });
+        this.getData();
       } else {
         this.getDataFromLS();
       }
@@ -75,8 +79,10 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
 
   loadDatasource(data: any) {
     this.dataSource = new MatTableDataSource<Guia>(data);
-    this.dataSource.paginator = this.paginator;
-    this.paginator._intl.itemsPerPageLabel = "Guías por página";
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.paginator._intl.itemsPerPageLabel = "Guías por página";
+    }, 100);
   }
 
   setFocus() {
@@ -91,10 +97,11 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     if (this.isValid(value)) {
       let idlocalidad = this._loginService.localidad;
       let guia: Guia = { nroguia: value, fechainicio: new Date(), idlocalidad };
+      console.log(guia);
       if (!this.isOnline) {
         guia.local = true;
         if (this._localStorage.add(guia)) {
-          this.notifier.notify('success', `Guía ${guia.nroguia} registrada.`);
+          this.notifier.notify('success', `Guía ${guia.nroguia} registrada en local.`);
           this.dataSource.data = [...this.dataSource.data, guia];
           this.clear();
         } else {
@@ -107,8 +114,12 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
           this.clear();
           this.notifier.notify('success', `Guía ${guia.nroguia} registrada.`);
         }, err => {
-          this.notifier.notify('error', err.error);
-          this.clear();
+          if(err.status == 400){
+            this.notifier.notify('error', err.error);
+            this.clear();
+          } else {
+            alert('Error en el servidor. Intentelo más tarde.');
+          }
         });
       }
     } else {
@@ -126,7 +137,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
           this.notifier.notify('error', 'Ocurrió un error en la eliminación.');
         });
       } else {
-
+        this._localStorage.remove(guia.nroguia);
+        this.getDataFromLS();
       }
     }
   }

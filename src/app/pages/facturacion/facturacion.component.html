@@ -11,13 +11,13 @@
                         <mat-form-field appearance="outline" style="font-size: 20px; width: 100%;">
                             <mat-label>N° de Guía</mat-label>
                             <input matInput placeholder="Ej. 011-1234567" #input="matInput" name="input" id="txtInput"
-                                (change)="onInputChange();" mask="000-0000000" autocomplete="off">
+                                (change)="onInputChange();" maxlength="20" autocomplete="off">
                             <mat-icon matSuffix style="font-size: 2rem; margin-right: 20px">qr_code</mat-icon>
                             <!-- <mat-hint>Hint</mat-hint> -->
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-10 offset-md-1">
+                <div class="col-sm-12 col-md-12 ">
                     <table mat-table #datatable [dataSource]="dataSource" class="mat-elevation-z8">
 
                         <!-- id Column -->
@@ -54,8 +54,6 @@
                                 </button>
                             </td>
                         </ng-container>
-
-                        
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>

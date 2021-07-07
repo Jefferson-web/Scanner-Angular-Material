@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Guia } from '../Interfaces/Guia';
 
 @Injectable({
@@ -9,13 +10,13 @@ export class LocalStorageService {
   constructor() {
   }
 
-  get guias(): [] {
+  get guias(): Guia[] {
     var payload = localStorage.getItem('guias');
     if (payload) {
-      return JSON.parse(payload);
+      return JSON.parse(payload) as Guia[];
     }
     localStorage.setItem('guias', JSON.stringify([]));
-    return [];
+    return [] as Guia[];
   }
 
   add(nuevaGuia: Guia) {
@@ -28,8 +29,10 @@ export class LocalStorageService {
     return false;
   }
 
-  remove(index: number) {
-    var guias = this.guias.splice(index, 1);
+  remove(nroguia: string) {
+    let guias = [...this.guias];
+    const index = guias.findIndex((guia: Guia) => guia.nroguia == nroguia);
+    guias.splice(index, 1);
     localStorage.setItem('guias', JSON.stringify(guias));
   }
 

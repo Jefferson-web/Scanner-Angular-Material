@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Guia } from '../Interfaces/Guia';
 import { LocalStorageService } from './local-storage.service';
+import { LoginService } from './login.service';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -10,8 +11,8 @@ import { RestService } from './rest.service';
 })
 export class GuiaService extends RestService {
 
-
-  constructor(private http: HttpClient, private _localStorage: LocalStorageService) {
+  constructor(private http: HttpClient, private _localStorage: LocalStorageService,
+              private _loginService: LoginService) {
     super();
   }
 
@@ -33,6 +34,15 @@ export class GuiaService extends RestService {
     var guias = this._localStorage.guias;
     if (guias.length == 0) return;
     return this.http.post(this.url + '/cargar', guias, { headers });
+  }
+
+  listDetails(){
+    let idlocalidad = this._loginService.localidad;
+    return this.http.get(this.url + `/${idlocalidad}/lista_detalles`);
+  }
+
+  getDetails(idproceso: number){
+    return this.http.get(this.url + `/${idproceso}/detalles`);
   }
 
   get url() {
