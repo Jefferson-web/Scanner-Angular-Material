@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Fase } from '../Interfaces/Fase';
 import { Guia } from '../Interfaces/Guia';
 import { LocalStorageService } from './local-storage.service';
 import { LoginService } from './login.service';
@@ -41,8 +42,12 @@ export class GuiaService extends RestService {
     return this.http.get(this.url + `/${idlocalidad}/lista_detalles`);
   }
 
-  getDetails(idproceso: number){
-    return this.http.get(this.url + `/${idproceso}/detalles`);
+  getDetails(idproceso: number): Observable<[]>{
+    return this.http.get<[]>(this.url + `/${idproceso}/detalles`);
+  }
+
+  listarFases(): Observable<Fase[]>{
+    return this.http.get<Fase[]>(this.url + '/fases');
   }
 
   get url() {

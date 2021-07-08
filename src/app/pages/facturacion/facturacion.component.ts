@@ -67,6 +67,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     let idlocalidad = this._loginService.localidad;
     this._guiaService.findAll(idlocalidad).subscribe(response => {
       this.loadDatasource(response);
+      console.log(response);
     }, err => {
       alert('Ocurrio un error en la obtención de los datos.');
     });
@@ -130,6 +131,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
   delete(guia: Guia) {
     if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroguia}?`)) {
       if (this.isOnline) {
+        console.log('onLine', guia.nroguia);
         this._guiaService.delete(guia.idproceso).subscribe(response => {
           this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idproceso != guia.idproceso);
           this._snackBar.open(`Guía N° ${guia.nroguia} eliminada.`, "Ok", { duration: 2000 })

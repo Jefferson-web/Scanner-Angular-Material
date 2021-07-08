@@ -2,7 +2,7 @@
     <mat-card class="p-4">
         <mat-card-header>
             <mat-card-title>Reportes</mat-card-title>
-            <mat-card-subtitle class="mt-1">Módulo para hacer saber el estado de las guías</mat-card-subtitle>
+            <mat-card-subtitle class="mt-1">Módulo para saber el estado de las guías</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <div class="row mt-4">
@@ -35,7 +35,7 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let element; columns: displayedColumns;" (click)="onClick(element);">
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns;let i=index" (click)="onClick(element,i);">
                         </tr>
                     </table>
 
@@ -43,44 +43,7 @@
 
                 </div>
                 <div class="col-12 col-lg-4">
-                    <mat-vertical-stepper selectedIndex="2">
-
-                        <ng-template matStepperIcon="edit">
-                            <mat-icon>done</mat-icon>
-                        </ng-template>
-
-                        <mat-step editable="true" completed="true">
-                            <ng-template matStepLabel>Facturación</ng-template>
-                            <ng-template matStepContent>
-                                <p class="text-muted">Fecha y Hora de Inicio</p>
-                                <p>21/05/2021 4:20 PM</p>
-                            </ng-template>
-                        </mat-step>
-
-                        <mat-step editable="true" completed="true">
-                            <ng-template matStepLabel>Embalaje</ng-template>
-                            <ng-template matStepContent>
-                                <p class="text-muted">Fecha y Hora de Inicio</p>
-                                <p>21/05/2021 4:20 PM</p>
-                            </ng-template>
-                        </mat-step>
-                        <mat-step editable="true" completed="false">
-                            <ng-template matStepLabel>Seguridad Interna</ng-template>
-                            <ng-template matStepContent>
-                                <mat-spinner diameter="30" class="mx-auto"></mat-spinner>
-                                <div class="mt-3" style="text-align: center;">Pendiente ...</div>
-                            </ng-template>
-                        </mat-step>
-                        <mat-step editable="true" completed="false">
-                            <ng-template matStepLabel>Transporte</ng-template>
-                        </mat-step>
-
-                        <mat-step editable="true" completed="false">
-                            <ng-template matStepLabel>Proceso Finalizado</ng-template>
-                        </mat-step>
-
-                    </mat-vertical-stepper>
-
+                    <progress-tracker [item]="selectedItem" [fases]=fases></progress-tracker>
                 </div>
             </div>
         </mat-card-content>

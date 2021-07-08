@@ -8,6 +8,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { HttpClientModule } from '@angular/common/http';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
+import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -18,7 +19,8 @@ const maskConfig: Partial<IConfig> = {
     PagesComponent,
     InicioComponent,
     FacturacionComponent,
-    ReportesComponent
+    ReportesComponent,
+    ProgressTrackerComponent
   ],
   imports: [
     CommonModule,

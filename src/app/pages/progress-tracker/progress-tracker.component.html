@@ -1,0 +1,24 @@
+<mat-vertical-stepper *ngIf="item" #stepper>
+
+    <ng-template matStepperIcon="edit">
+        <mat-icon>done</mat-icon>
+    </ng-template>
+
+    <mat-step editable="true" [completed]="detalle.completed" *ngFor="let detalle of detalles">
+        <ng-template matStepLabel>{{ detalle.fase }}</ng-template>
+        <ng-template matStepContent>
+            <ng-container *ngIf="detalle.fecharegistro">
+                <p class="text-muted">Fecha: {{ detalle.fecharegistro | date:'M/d/yy' }}</p>
+                <p>Hora: {{ detalle.fecharegistro | date:'h:mm a' }}</p>
+            </ng-container>
+            <ng-container *ngIf="!detalle.fecharegistro">
+                <mat-spinner diameter="30" class="mx-auto"></mat-spinner>
+                <div class="mt-3" style="text-align: center;">Pendiente ...</div>    
+            </ng-container>
+        </ng-template>
+    </mat-step>
+</mat-vertical-stepper>
+<ng-container *ngIf="!item">
+    <img src="assets/imagenes/seleccione.svg" alt="" width="200px" style="opacity: .15; display: flex;margin: auto;">
+    <h2 class="text-muted" style="text-align: center;">Seleccione un guía de la tabla</h2>
+</ng-container>

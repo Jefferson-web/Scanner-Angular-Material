@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscriber, Subscription } from 'rxjs';
+import { Fase } from 'src/app/Interfaces/Fase';
 import { GuiaService } from 'src/app/services/guia.service';
 
 @Component({
@@ -16,11 +17,17 @@ export class ReportesComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['index', 'guia', 'ultima_fecha', 'fase', 'estado'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  selectedItem: any;
+  fases: Fase[];
 
   obs1: Subscription;
+  obs2: Subscription;
+
+  selectedRow: number = -1;
 
   ngOnInit(): void {
     this.getData();
+    this.getFases();
   }
 
   getData(){
@@ -29,15 +36,20 @@ export class ReportesComponent implements OnInit, OnDestroy {
     });
   }
 
+  getFases(){
+    this.obs2 = this._guiaService.listarFases().subscribe(fases => {
+      this.fases = fases;
+    });
+  }
+
   loadDatasource(data: any){
     this.dataSource = new MatTableDataSource(data);
     setTimeout(() => this.dataSource.paginator = this.paginator, 50);
   }
 
-  onClick(element: any){
-    this._guiaService.getDetails(element.idproceso).subscribe(detalles => {
-      console.log(detalles);
-    });  
+  onClick(element: any, index:number){
+    this.selectedItem = element; 
+    this.selectedRow = index;
   }
 
   ngOnDestroy(): void {
