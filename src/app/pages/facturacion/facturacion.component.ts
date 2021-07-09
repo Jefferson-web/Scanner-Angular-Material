@@ -45,21 +45,33 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     this._internet.createOnline$().subscribe(status => {
       this.isOnline = status;
       if (this.isOnline) {
-        this._guiaService.cargar()?.subscribe(response => {
-          const cantidad = this._localStorage.guias.length;
-          this.notifier.notify('success', `${cantidad} guías registradas.`);
-          this._localStorage.removeAll();
+        if(this._localStorage.guias.length > 0){
+          this.saveLocalData();
+        } else {
           this.getData();
-          return;
-        }, (err) => {
-          this.notifier.notify('error', err.error);
-          this.getData();
-          this._localStorage.removeAll();
-        });
-        this.getData();
+        }
       } else {
         this.getDataFromLS();
       }
+    });
+  }
+
+  saveLocalData(){
+    var guias = this._localStorage.guias;
+    if(guias.length == 0) return;
+    this._guiaService.cargar(guias).subscribe(response => {
+      const cantidad = this._localStorage.guias.length;
+      this.notifier.notify('success', `${cantidad} guías registradas.`);
+      this._localStorage.removeAll();
+      this.getData();
+    }, (err) => {
+      this.notifier.notify('error', err.error.message);
+      if(err.error.lastIndex > 0 ){
+        this.notifier.notify('success', `${err.error.lastIndex} guías registradas.`);
+      }
+      this._localStorage.removeAll(err.error.lastIndex);
+      this.saveLocalData();
+      this.getData();
     });
   }
 

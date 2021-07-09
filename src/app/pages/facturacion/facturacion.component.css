@@ -5,13 +5,13 @@ p, h1, h2, h3, h4, h5, h6, div, span, mat-card-title{
 table{
     width: 100%;
     box-shadow: none;
-    font-size: 20px !important;
+    /* font-size: 20px !important; */
 }
-
+/* 
 td{
     font-size: 1.1rem;
 }
 
 th, mat-paginator{
     font-size: .9rem;
-}
+} */

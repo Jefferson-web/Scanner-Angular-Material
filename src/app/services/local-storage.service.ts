@@ -30,14 +30,19 @@ export class LocalStorageService {
   }
 
   remove(nroguia: string) {
-    let guias = [...this.guias];
+    let guias = this.guias.slice(); // haciendo una copia
     const index = guias.findIndex((guia: Guia) => guia.nroguia == nroguia);
     guias.splice(index, 1);
     localStorage.setItem('guias', JSON.stringify(guias));
   }
 
-  removeAll() {
-    localStorage.removeItem('guias');
+  removeAll(index? : number) {
+    if(index || index == 0){
+      let guias = this.guias.slice(); // Haciendo una copia
+      localStorage.setItem('guias', JSON.stringify(guias.slice(index + 1, guias.length)));
+    } else {
+      localStorage.removeItem('guias');
+    }
   }
 
 }

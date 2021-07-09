@@ -30,10 +30,8 @@ export class GuiaService extends RestService {
     return this.http.delete(this.url + '/' + Id);
   }
 
-  cargar() {
+  cargar(guias: any) {
     var headers = new HttpHeaders().set('Content-Type', 'application/json');
-    var guias = this._localStorage.guias;
-    if (guias.length == 0) return;
     return this.http.post(this.url + '/cargar', guias, { headers });
   }
 
