@@ -48,6 +48,10 @@ export class GuiaService extends RestService {
     return this.http.get<Fase[]>(this.url + '/fases');
   }
 
+  listarDatosGenerales(): Observable<[]>{
+    return this.http.get<[]>(this.url + '/datos_generales');
+  }
+
   get url() {
     return this.baseURL + '/Guia';
   }

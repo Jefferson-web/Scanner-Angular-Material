@@ -36,13 +36,8 @@ export class LocalStorageService {
     localStorage.setItem('guias', JSON.stringify(guias));
   }
 
-  removeAll(index? : number) {
-    if(index || index == 0){
-      let guias = this.guias.slice(); // Haciendo una copia
-      localStorage.setItem('guias', JSON.stringify(guias.slice(index + 1, guias.length)));
-    } else {
+  removeAll() {
       localStorage.removeItem('guias');
-    }
   }
 
 }

@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,7 +44,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     this._internet.createOnline$().subscribe(status => {
       this.isOnline = status;
       if (this.isOnline) {
-        if(this._localStorage.guias.length > 0){
+        if (this._localStorage.guias.length > 0) {
           this.saveLocalData();
         } else {
           this.getData();
@@ -56,9 +55,8 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     });
   }
 
-  saveLocalData(){
+  saveLocalData() {
     var guias = this._localStorage.guias;
-    if(guias.length == 0) return;
     this._guiaService.cargar(guias).subscribe(response => {
       const cantidad = this._localStorage.guias.length;
       this.notifier.notify('success', `${cantidad} guías registradas.`);
@@ -66,12 +64,6 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
       this.getData();
     }, (err) => {
       this.notifier.notify('error', err.error.message);
-      if(err.error.lastIndex > 0 ){
-        this.notifier.notify('success', `${err.error.lastIndex} guías registradas.`);
-      }
-      this._localStorage.removeAll(err.error.lastIndex);
-      this.saveLocalData();
-      this.getData();
     });
   }
 
@@ -109,7 +101,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     const value = this.input.value;
     if (this.isValid(value)) {
       let idlocalidad = this._loginService.localidad;
-      let guia: Guia = { nroguia: value, fechainicio: new Date(), idlocalidad };
+      let guia: Guia = { nroguia: value, idlocalidad };
       console.log(guia);
       if (!this.isOnline) {
         guia.local = true;
@@ -127,7 +119,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
           this.clear();
           this.notifier.notify('success', `Guía ${guia.nroguia} registrada.`);
         }, err => {
-          if(err.status == 400){
+          if (err.status == 400) {
             this.notifier.notify('error', err.error);
             this.clear();
           } else {

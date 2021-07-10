@@ -7,12 +7,9 @@ import { MaterialModule } from '../material.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { HttpClientModule } from '@angular/common/http';
-import { IConfig, NgxMaskModule } from 'ngx-mask';
 import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.component';
-
-const maskConfig: Partial<IConfig> = {
-  validation: false,
-};
+import { GraficosComponent } from './graficos/graficos.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -20,14 +17,15 @@ const maskConfig: Partial<IConfig> = {
     InicioComponent,
     FacturacionComponent,
     ReportesComponent,
-    ProgressTrackerComponent
+    ProgressTrackerComponent,
+    GraficosComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     PagesRoutingModule,
     HttpClientModule,
-    NgxMaskModule.forRoot(maskConfig)
+    NgxChartsModule
   ],
   exports: [
     PagesComponent,
