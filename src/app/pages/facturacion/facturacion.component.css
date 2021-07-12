@@ -7,6 +7,15 @@ table{
     box-shadow: none;
     /* font-size: 20px !important; */
 }
+
+.tbl-facturacion{
+    text-align: center;
+}
+
+.tbl-facturacion th{
+    text-align: center !important;
+}
+
 /* 
 td{
     font-size: 1.1rem;

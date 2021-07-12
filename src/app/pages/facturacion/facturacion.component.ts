@@ -102,7 +102,6 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     if (this.isValid(value)) {
       let idlocalidad = this._loginService.localidad;
       let guia: Guia = { nroguia: value, idlocalidad };
-      console.log(guia);
       if (!this.isOnline) {
         guia.local = true;
         if (this._localStorage.add(guia)) {
@@ -115,7 +114,7 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
         }
       } else {
         this._guiaService.save(guia).subscribe(response => {
-          this.dataSource.data = [...this.dataSource.data, response];
+          this.agregarGuia(response);
           this.clear();
           this.notifier.notify('success', `Guía ${guia.nroguia} registrada.`);
         }, err => {
@@ -132,13 +131,26 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
     }
   }
 
+  agregarGuia(guia: Guia) {
+    let data = this.dataSource.data.slice();
+    this.dataSource.data = data.map((value) => {
+      if (value.nroguia == guia.nroguia) return guia;
+      else return value;
+    });
+  }
+
   delete(guia: Guia) {
     if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroguia}?`)) {
       if (this.isOnline) {
-        console.log('onLine', guia.nroguia);
         this._guiaService.delete(guia.idproceso).subscribe(response => {
-          this.dataSource.data = this.dataSource.data.filter((objGuia: Guia) => objGuia.idproceso != guia.idproceso);
-          this._snackBar.open(`Guía N° ${guia.nroguia} eliminada.`, "Ok", { duration: 2000 })
+          this.dataSource.data = this.dataSource.data.map((objGuia: Guia) => {
+            if (objGuia.idproceso === guia.idproceso) {
+              objGuia.accion = true;
+              return objGuia;
+            }
+            return objGuia;
+          });
+          this._snackBar.open(`Guía N° ${guia.nroguia} Cancelada.`, "Ok", { duration: 2000 })
         }, err => {
           this.notifier.notify('error', 'Ocurrió un error en la eliminación.');
         });

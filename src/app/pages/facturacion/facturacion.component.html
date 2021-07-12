@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12 ">
-                    <table mat-table #datatable [dataSource]="dataSource" class="mat-elevation-z8">
+                    <table mat-table #datatable [dataSource]="dataSource" class="mat-elevation-z8 tbl-facturacion">
 
                         <!-- id Column -->
                         <ng-container matColumnDef="position">
@@ -34,15 +34,24 @@
 
                         <ng-container matColumnDef="fechaInicio">
                             <th mat-header-cell *matHeaderCellDef> Fecha de Registro </th>
-                            <td mat-cell *matCellDef="let element"> {{element.fechainicio | date: 'yyyy/MM/dd, H:mm'}} horas
+                            <td mat-cell *matCellDef="let element"> {{element.fechainicio | date: 'yyyy/MM/dd, H:mm'}}
+                                horas
                             </td>
                         </ng-container>
 
                         <ng-container matColumnDef="estado">
                             <th mat-header-cell *matHeaderCellDef> Estado </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element.local;">Pendiente</div>
-                                <div *ngIf="!element.local;">Registrado</div>
+                                <mat-icon color="warn" *ngIf="element.accion" matTooltip="Cancelado"
+                                    matTooltipPosition="above" style="cursor: default;">
+                                    highlight_off
+                                </mat-icon>
+                                <mat-icon style="color: rgb(97, 161, 1); cursor: default;" *ngIf="!element.accion"
+                                    matTooltip="Registrado" matTooltipPosition="above">
+                                    done
+                                </mat-icon>
+                                <!-- <div *ngIf="element.local;">Pendiente</div>
+                                <div *ngIf="!element.local;">Registrado</div> -->
                             </td>
                         </ng-container>
 
