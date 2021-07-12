@@ -26,7 +26,7 @@ export class GraficosComponent implements OnInit {
   yAxisLabel = 'Guías';
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#D32F2F', '#7C4DFF']
   };
 
   constructor(private _guiaService: GuiaService,
