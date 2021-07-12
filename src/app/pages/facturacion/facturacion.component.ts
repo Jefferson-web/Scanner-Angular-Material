@@ -133,23 +133,32 @@ export class FacturacionComponent implements AfterViewInit, OnInit {
 
   agregarGuia(guia: Guia) {
     let data = this.dataSource.data.slice();
-    this.dataSource.data = data.map((value) => {
-      if (value.nroguia == guia.nroguia) return guia;
-      else return value;
+    let index = data.findIndex(value => value.nroguia == guia.nroguia);
+    if (index >= 0) {
+      data[index] = guia;
+      this.dataSource.data = data; 
+    } else {
+      this.dataSource.data = [guia, ...data];
+    }
+  }
+
+  eliminarGuia(guia: Guia){
+    let data = this.dataSource.data.slice();
+    data = data.map((value: Guia) => {
+      if (value.idproceso == guia.idproceso) {
+        value.accion = true;
+        return value;
+      }
+      return value;
     });
+    this.dataSource.data = data;
   }
 
   delete(guia: Guia) {
     if (window.confirm(`¿Estas seguro de eliminar la guía ${guia.nroguia}?`)) {
       if (this.isOnline) {
         this._guiaService.delete(guia.idproceso).subscribe(response => {
-          this.dataSource.data = this.dataSource.data.map((objGuia: Guia) => {
-            if (objGuia.idproceso === guia.idproceso) {
-              objGuia.accion = true;
-              return objGuia;
-            }
-            return objGuia;
-          });
+          this.eliminarGuia(guia);
           this._snackBar.open(`Guía N° ${guia.nroguia} Cancelada.`, "Ok", { duration: 2000 })
         }, err => {
           this.notifier.notify('error', 'Ocurrió un error en la eliminación.');
